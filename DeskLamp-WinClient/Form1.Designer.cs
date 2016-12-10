@@ -44,6 +44,7 @@
             // 
             // cbDeskLamp
             // 
+            this.cbDeskLamp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDeskLamp.FormattingEnabled = true;
             this.cbDeskLamp.Location = new System.Drawing.Point(76, 12);
             this.cbDeskLamp.Name = "cbDeskLamp";

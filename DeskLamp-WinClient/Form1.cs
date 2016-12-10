@@ -54,12 +54,12 @@ namespace DeskLamp_WinClient
                 switch (k)
                 {
                     case Keys.Alt | Keys.Add:
-                        int add = Math.Min(this.tbIntensity.Value + 10, this.tbIntensity.Maximum);
+                        int add = Math.Min(this.tbIntensity.Value + this.tbIntensity.SmallChange, this.tbIntensity.Maximum);
                         this.tbIntensity.Value = add;
                         break;
 
                     case Keys.Alt | Keys.Subtract:
-                        int sub = Math.Max(this.tbIntensity.Value - 10, this.tbIntensity.Minimum);
+                        int sub = Math.Max(this.tbIntensity.Value - this.tbIntensity.SmallChange, this.tbIntensity.Minimum);
                         this.tbIntensity.Value = sub;
                         break;
                 }
