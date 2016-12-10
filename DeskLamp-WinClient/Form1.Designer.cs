@@ -90,6 +90,8 @@
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.BalloonTipText = "DeskLamp is minimized\r\nUse ALT+ and ALT- to change Intensity";
+            this.notifyIcon1.BalloonTipTitle = "DeskLamp";
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "DeskLamp";
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
@@ -99,7 +101,7 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 133);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(106, 111);
             // 
             // tbMenuItem
             // 

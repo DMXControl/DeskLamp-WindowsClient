@@ -18,6 +18,7 @@ namespace DeskLamp_WinClient
         public Form1()
         {
             InitializeComponent();
+
             usedInstance = new DeskLamp.DeskLampInstance();
 
             this.Disposed += new EventHandler(Form1_Disposed);
@@ -112,6 +113,8 @@ namespace DeskLamp_WinClient
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
             this.notifyIcon1.Visible = false;
+            this.hk.ReRegisterHotKey(Keys.Alt | Keys.Add);
+            this.hk.ReRegisterHotKey(Keys.Alt | Keys.Subtract);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -122,6 +125,8 @@ namespace DeskLamp_WinClient
                 notifyIcon1.Visible = true;
                 notifyIcon1.ShowBalloonTip(3000);
                 this.ShowInTaskbar = false;
+                this.hk.ReRegisterHotKey(Keys.Alt | Keys.Add);
+                this.hk.ReRegisterHotKey(Keys.Alt | Keys.Subtract);
             }
             else
             {
@@ -174,6 +179,12 @@ namespace DeskLamp_WinClient
             if (i.Count == 0)
                 return Keys.None;
             return i[0];
+        }
+
+        public void ReRegisterHotKey(Keys key)
+        {
+            UnregisterHotKey(key);
+            RegisterHotKey(key);
         }
 
         public void RegisterHotKey(Keys key)
