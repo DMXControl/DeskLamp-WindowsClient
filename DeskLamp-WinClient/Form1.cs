@@ -36,8 +36,11 @@ namespace DeskLamp_WinClient
 
         private void Form1_Disposed(object sender, EventArgs e)
         {
-            if (usedInstance != null && !usedInstance.IsDisposed) 
+            if (usedInstance != null && !usedInstance.IsDisposed)
+            {
+                usedInstance.Enabled = false;
                 usedInstance.Dispose();
+            }
 
             this.hk.UnregisterHotKey(Keys.Alt | Keys.Add);
             this.hk.UnregisterHotKey(Keys.Alt | Keys.Subtract);
