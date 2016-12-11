@@ -42,8 +42,7 @@ namespace DeskLamp_WinClient
                 usedInstance.Dispose();
             }
 
-            this.hk.UnregisterHotKey(Keys.Alt | Keys.Add);
-            this.hk.UnregisterHotKey(Keys.Alt | Keys.Subtract);
+            this.hk.Dispose();
         }
 
         protected override void WndProc(ref Message m)
@@ -116,8 +115,7 @@ namespace DeskLamp_WinClient
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
             this.notifyIcon1.Visible = false;
-            this.hk.ReRegisterHotKey(Keys.Alt | Keys.Add);
-            this.hk.ReRegisterHotKey(Keys.Alt | Keys.Subtract);
+            this.hk.ReRegisterAll();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -128,8 +126,7 @@ namespace DeskLamp_WinClient
                 notifyIcon1.Visible = true;
                 notifyIcon1.ShowBalloonTip(3000);
                 this.ShowInTaskbar = false;
-                this.hk.ReRegisterHotKey(Keys.Alt | Keys.Add);
-                this.hk.ReRegisterHotKey(Keys.Alt | Keys.Subtract);
+                this.hk.ReRegisterAll();
             }
             else
             {
@@ -160,12 +157,9 @@ namespace DeskLamp_WinClient
             this.tbIntensity.ValueChanged += tbIntensity_ValueChanged;
             this.tbMenuItem.ValueChanged += tbMenuItem_ValueChanged;
         }
-
-        
-
     }
 
-    public class HotKey
+    public class HotKey : IDisposable
     {
         private Dictionary<Keys, int> idList = new Dictionary<Keys,int>();
 
@@ -182,6 +176,11 @@ namespace DeskLamp_WinClient
             if (i.Count == 0)
                 return Keys.None;
             return i[0];
+        }
+
+        public void ReRegisterAll()
+        {
+            this.idList.Keys.ToList().ForEach(ReRegisterHotKey);
         }
 
         public void ReRegisterHotKey(Keys key)
@@ -228,6 +227,15 @@ namespace DeskLamp_WinClient
                 
             }
         }
+
+        #region IDisposable Member
+
+        public void Dispose()
+        {
+            this.idList.Keys.ToList().ForEach(UnregisterHotKey);
+        }
+
+        #endregion
 
         private static int MOD_ALT = 0x1;
         private static int MOD_CONTROL = 0x2;
