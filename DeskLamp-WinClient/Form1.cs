@@ -52,7 +52,7 @@ namespace DeskLamp_WinClient
             if (m.Msg == HotKey.WM_HOTKEY)
             {
                 int id = (int)m.WParam;
-                Keys k = this.hk.GetKeyByID(id);
+                Keys k = (Keys)id;
                 switch (k)
                 {
                     case Keys.Alt | Keys.Add:
@@ -161,7 +161,7 @@ namespace DeskLamp_WinClient
 
     public class HotKey : IDisposable
     {
-        private Dictionary<Keys, int> idList = new Dictionary<Keys,int>();
+        private List<Keys> idList = new List<Keys>();
 
         private readonly Form _parentForm;
 
@@ -170,17 +170,10 @@ namespace DeskLamp_WinClient
             this._parentForm = parent;
         }
 
-        public Keys GetKeyByID(int id)
-        {
-            var i = idList.Where(c => c.Value == id).Select(c => c.Key).ToList();
-            if (i.Count == 0)
-                return Keys.None;
-            return i[0];
-        }
-
         public void ReRegisterAll()
         {
-            this.idList.Keys.ToList().ForEach(ReRegisterHotKey);
+            //ToList to make a copy
+            this.idList.ToList().ForEach(ReRegisterHotKey);
         }
 
         public void ReRegisterHotKey(Keys key)
@@ -191,35 +184,32 @@ namespace DeskLamp_WinClient
 
         public void RegisterHotKey(Keys key)
         {
-            if (idList.ContainsKey(key)) return;
+            if (idList.Contains(key)) return;
 
-            int hash = key.GetHashCode();
-            if (idList.Values.Contains(hash)) return;
-
-            idList[key] = hash;
+            idList.Add(key);
 
             int modifiers = 0;
 
             if ((key & Keys.Alt) == Keys.Alt)
-                modifiers = modifiers | MOD_ALT;
+                modifiers |= MOD_ALT;
 
             if ((key & Keys.Control) == Keys.Control)
-                modifiers = modifiers | MOD_CONTROL;
+                modifiers |= MOD_CONTROL;
 
             if ((key & Keys.Shift) == Keys.Shift)
-                modifiers = modifiers | MOD_SHIFT;
+                modifiers |= MOD_SHIFT;
 
             Keys k = key & ~Keys.Control & ~Keys.Shift & ~Keys.Alt;
-            RegisterHotKey(_parentForm.Handle, idList[key], (uint)modifiers, (uint)k);
+            RegisterHotKey(_parentForm.Handle, (int)key, (uint)modifiers, (uint)k);
         }
 
         public void UnregisterHotKey(Keys key)
         {
-            if (!idList.ContainsKey(key)) return;
+            if (!idList.Contains(key)) return;
 
             try
             {
-                UnregisterHotKey(_parentForm.Handle, idList[key]);
+                UnregisterHotKey(_parentForm.Handle, (int)key);
                 idList.Remove(key);
             }
             catch (Exception ex)
@@ -232,7 +222,8 @@ namespace DeskLamp_WinClient
 
         public void Dispose()
         {
-            this.idList.Keys.ToList().ForEach(UnregisterHotKey);
+            //ToList to make a copy
+            this.idList.ToList().ForEach(UnregisterHotKey);
         }
 
         #endregion
