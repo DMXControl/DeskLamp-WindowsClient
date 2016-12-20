@@ -32,14 +32,19 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.cbDeskLamp = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelIntensity = new System.Windows.Forms.Label();
             this.tbIntensity = new System.Windows.Forms.TrackBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tbMenuItem = new DeskLamp_WinClient.TrackBarMenuItem();
+            this.labelColor = new System.Windows.Forms.Label();
+            this.tbStrobo = new System.Windows.Forms.TrackBar();
+            this.labelStrobo = new System.Windows.Forms.Label();
+            this.colorPicker = new DeskLamp_WinClient.HSB_colorpicker();
             ((System.ComponentModel.ISupportInitialize)(this.tbIntensity)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbStrobo)).BeginInit();
             this.SuspendLayout();
             // 
             // cbDeskLamp
@@ -61,14 +66,14 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "DeskLamp:";
             // 
-            // label2
+            // labelIntensity
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Intensity:";
+            this.labelIntensity.AutoSize = true;
+            this.labelIntensity.Location = new System.Drawing.Point(9, 52);
+            this.labelIntensity.Name = "labelIntensity";
+            this.labelIntensity.Size = new System.Drawing.Size(49, 13);
+            this.labelIntensity.TabIndex = 2;
+            this.labelIntensity.Text = "Intensity:";
             // 
             // tbIntensity
             // 
@@ -119,15 +124,61 @@
             this.tbMenuItem.Value = 0;
             this.tbMenuItem.ValueChanged += new System.EventHandler(this.tbMenuItem_ValueChanged);
             // 
+            // labelColor
+            // 
+            this.labelColor.AutoSize = true;
+            this.labelColor.Location = new System.Drawing.Point(9, 191);
+            this.labelColor.Name = "labelColor";
+            this.labelColor.Size = new System.Drawing.Size(34, 13);
+            this.labelColor.TabIndex = 4;
+            this.labelColor.Text = "Color:";
+            // 
+            // tbStrobo
+            // 
+            this.tbStrobo.LargeChange = 20;
+            this.tbStrobo.Location = new System.Drawing.Point(76, 90);
+            this.tbStrobo.Maximum = 100;
+            this.tbStrobo.Name = "tbStrobo";
+            this.tbStrobo.Size = new System.Drawing.Size(196, 45);
+            this.tbStrobo.SmallChange = 5;
+            this.tbStrobo.TabIndex = 6;
+            this.tbStrobo.TickFrequency = 10;
+            this.tbStrobo.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.tbStrobo.ValueChanged += new System.EventHandler(this.tbStrobo_ValueChanged);
+            // 
+            // labelStrobo
+            // 
+            this.labelStrobo.AutoSize = true;
+            this.labelStrobo.Location = new System.Drawing.Point(9, 104);
+            this.labelStrobo.Name = "labelStrobo";
+            this.labelStrobo.Size = new System.Drawing.Size(41, 13);
+            this.labelStrobo.TabIndex = 5;
+            this.labelStrobo.Text = "Strobo:";
+            // 
+            // colorPicker
+            // 
+            this.colorPicker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("colorPicker.BackgroundImage")));
+            this.colorPicker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.colorPicker.CircleDiameter = 5;
+            this.colorPicker.CurrentColor = System.Drawing.Color.White;
+            this.colorPicker.Location = new System.Drawing.Point(97, 141);
+            this.colorPicker.Name = "colorPicker";
+            this.colorPicker.Size = new System.Drawing.Size(125, 125);
+            this.colorPicker.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 98);
+            this.ClientSize = new System.Drawing.Size(284, 278);
+            this.Controls.Add(this.tbStrobo);
+            this.Controls.Add(this.labelStrobo);
+            this.Controls.Add(this.labelColor);
             this.Controls.Add(this.tbIntensity);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelIntensity);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbDeskLamp);
+            this.Controls.Add(this.colorPicker);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -137,6 +188,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbIntensity)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.contextMenuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbStrobo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,12 +198,16 @@
 
         private System.Windows.Forms.ComboBox cbDeskLamp;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelIntensity;
         private System.Windows.Forms.TrackBar tbIntensity;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private TrackBarMenuItem tbMenuItem;
+        private System.Windows.Forms.Label labelColor;
+        private System.Windows.Forms.TrackBar tbStrobo;
+        private System.Windows.Forms.Label labelStrobo;
+        private HSB_colorpicker colorPicker;
     }
 }
 

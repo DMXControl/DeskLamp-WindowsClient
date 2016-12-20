@@ -19,12 +19,16 @@ namespace DeskLamp_WinClient
         {
             InitializeComponent();
 
+            this.colorPicker.SelectedColorChanged += new EventHandler(colorPicker_SelectedColorChanged);
+
             usedInstance = new DeskLamp.DeskLampInstance();
 
             this.Disposed += new EventHandler(Form1_Disposed);
 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.hk = new HotKey(this);
+
+            SetIntensityView();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -82,9 +86,13 @@ namespace DeskLamp_WinClient
                 {
                     cbDeskLamp.SelectedItem = selected;
                 }
-                else if(cbDeskLamp.Items.Count > 0)
+                else if (cbDeskLamp.Items.Count > 0)
                 {
                     cbDeskLamp.SelectedIndex = 0;
+                }
+                else
+                {
+                    SetIntensityView();
                 }
             }
         }
@@ -96,17 +104,59 @@ namespace DeskLamp_WinClient
             {
                 usedInstance.ID = id;
                 usedInstance.Enabled = true;
+
+                if (usedInstance.IsRGB && usedInstance.HasStrobe)
+                    SetFullView();
+                else if (usedInstance.HasStrobe)
+                    SetIntensityStrobeView();
+                else
+                    SetIntensityView();
             }
             else
             {
                 usedInstance.Enabled = false;
                 usedInstance.ID = String.Empty;
+                SetIntensityView();
             }
+        }
+
+        private void SetIntensityView()
+        {
+            this.labelIntensity.Visible = this.tbIntensity.Visible = true;
+            this.labelStrobo.Visible = this.tbStrobo.Visible = false;
+            this.labelColor.Visible = this.colorPicker.Visible = false;
+            this.Size = new Size(290, 113);
+        }
+
+        private void SetIntensityStrobeView()
+        {
+            this.labelIntensity.Visible = this.tbIntensity.Visible = true;
+            this.labelStrobo.Visible = this.tbStrobo.Visible = true;
+            this.labelColor.Visible = this.colorPicker.Visible = false;
+            this.Size = new Size(290, 165);
+        }
+
+        private void SetFullView()
+        {
+            this.labelIntensity.Visible = this.tbIntensity.Visible = true;
+            this.labelStrobo.Visible = this.tbStrobo.Visible = true;
+            this.labelColor.Visible = this.colorPicker.Visible = true;
+            this.Size = new Size(290, 306);
+        }
+
+        private void colorPicker_SelectedColorChanged(object sender, EventArgs e)
+        {
+            
         }
 
         private void tbIntensity_ValueChanged(object sender, EventArgs e)
         {
             Update(tbIntensity.Value);
+        }
+
+        private void tbStrobo_ValueChanged(object sender, EventArgs e)
+        {
+            usedInstance.Strobe = (byte)(((double)tbStrobo.Value / 100) * 255);
         }
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
@@ -161,7 +211,7 @@ namespace DeskLamp_WinClient
 
     public class HotKey : IDisposable
     {
-        private List<Keys> idList = new List<Keys>();
+        private readonly List<Keys> idList = new List<Keys>();
 
         private readonly Form _parentForm;
 
