@@ -66,8 +66,10 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DeskLamp">
-      <HintPath>..\..\DeskLamp-Driver\DeskLamp.exe</HintPath>
+    <Reference Include="DeskLamp, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <ExecutableExtension>.exe</ExecutableExtension>
+      <HintPath>..\dep\DeskLamp.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
