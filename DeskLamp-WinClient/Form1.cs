@@ -31,11 +31,18 @@ namespace DeskLamp_WinClient
             SetIntensityView();
         }
 
+        public int? InitialIntensity { get; set; }
+
+        public bool StartMinimized { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             this.hk.RegisterHotKey(Keys.Alt | Keys.Add);
             this.hk.RegisterHotKey(Keys.Alt | Keys.Subtract);
+
+            if (StartMinimized)
+                this.WindowState = FormWindowState.Minimized;
         }
 
         private void Form1_Disposed(object sender, EventArgs e)
@@ -89,6 +96,8 @@ namespace DeskLamp_WinClient
                 else if (cbDeskLamp.Items.Count > 0)
                 {
                     cbDeskLamp.SelectedIndex = 0;
+                    if (this.InitialIntensity.HasValue)
+                        tbIntensity.Value = (int)this.InitialIntensity;
                 }
                 else
                 {
