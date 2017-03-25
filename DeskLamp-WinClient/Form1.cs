@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace DeskLamp_WinClient
 {
@@ -24,6 +27,7 @@ namespace DeskLamp_WinClient
             usedInstance = new DeskLamp.DeskLampInstance();
 
             this.Disposed += new EventHandler(Form1_Disposed);
+            Microsoft.Win32.SystemEvents.PowerModeChanged += new Microsoft.Win32.PowerModeChangedEventHandler(SystemEvents_PowerModeChanged);
 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.hk = new HotKey(this);
@@ -97,7 +101,9 @@ namespace DeskLamp_WinClient
                 {
                     cbDeskLamp.SelectedIndex = 0;
                     if (this.InitialIntensity.HasValue)
-                        tbIntensity.Value = (int)this.InitialIntensity;
+                    {
+                        Update((int)this.InitialIntensity);
+                    }
                 }
                 else
                 {
@@ -215,6 +221,22 @@ namespace DeskLamp_WinClient
 
             this.tbIntensity.ValueChanged += tbIntensity_ValueChanged;
             this.tbMenuItem.ValueChanged += tbMenuItem_ValueChanged;
+        }
+
+        private void SystemEvents_PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
+        {
+            switch (e.Mode)
+            {
+              case PowerModes.Resume:
+                    ThreadPool.QueueUserWorkItem(o => ProcessSystemResumedEvent());
+                    break;
+            }
+        }
+
+        private void ProcessSystemResumedEvent()
+        {
+            Thread.Sleep(5000);
+            this.BeginInvoke(new Action(() => Update(this.tbIntensity.Value)));
         }
     }
 
