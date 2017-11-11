@@ -209,34 +209,40 @@ namespace DeskLamp_WinClient
             Update(tbMenuItem.Value);
         }
 
-        private void Update(double value)
+        private void Update(double value, bool persistValue = true)
         {
-            this.tbIntensity.ValueChanged -= tbIntensity_ValueChanged;
-            this.tbMenuItem.ValueChanged -= tbMenuItem_ValueChanged;
-
             usedInstance.Brightness = (byte)((value / 100) * 255);
 
-            if (tbIntensity.Value != value) tbIntensity.Value = (int)value;
-            if (tbMenuItem.Value != value) tbMenuItem.Value = (int)value;
+            if (persistValue)
+            {
+                this.tbIntensity.ValueChanged -= tbIntensity_ValueChanged;
+                this.tbMenuItem.ValueChanged -= tbMenuItem_ValueChanged;
 
-            this.tbIntensity.ValueChanged += tbIntensity_ValueChanged;
-            this.tbMenuItem.ValueChanged += tbMenuItem_ValueChanged;
+                if (tbIntensity.Value != value) tbIntensity.Value = (int)value;
+                if (tbMenuItem.Value != value) tbMenuItem.Value = (int)value;
+
+                this.tbIntensity.ValueChanged += tbIntensity_ValueChanged;
+                this.tbMenuItem.ValueChanged += tbMenuItem_ValueChanged;
+            }
         }
 
         private void SystemEvents_PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
-            switch (e.Mode)
-            {
-              case PowerModes.Resume:
-                    ThreadPool.QueueUserWorkItem(o => ProcessSystemResumedEvent());
-                    break;
-            }
+            ThreadPool.QueueUserWorkItem(o => ProcessSystemPowerModeChangeEvent(e.Mode));
         }
 
-        private void ProcessSystemResumedEvent()
+        private void ProcessSystemPowerModeChangeEvent(PowerModes e)
         {
-            Thread.Sleep(5000);
-            this.BeginInvoke(new Action(() => Update(this.tbIntensity.Value)));
+            switch(e)
+            { 
+                case PowerModes.Resume:
+                    Thread.Sleep(5000);
+                    this.BeginInvoke(new Action(() => Update(this.tbIntensity.Value)));
+                    break;
+                case PowerModes.Suspend:
+                    this.BeginInvoke(new Action(() => Update(0, false)));
+                    break;
+            }
         }
     }
 
