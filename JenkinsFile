@@ -45,14 +45,6 @@ pipeline {
 				}
 			}
 		}
-		stage('Pack Output Zip'){
-			steps {
-				zip DeskLamp-WinClient\bin\Release
-					//  Build the release configuration of the project
-					bat "\"${MSBuild}\" DeskLamp-WinClient.sln /p:Configuration=Release /t:Clean;Rebuild /p:Platform=\"Any CPU\" "
-				}
-			}
-		}
 		stage('Pack Zip and Archive Artifacts'){
 			steps {
 				//  Zip the release output and archive it
