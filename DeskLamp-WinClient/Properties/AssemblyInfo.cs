@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DMXControl Projects e.V.")]
 [assembly: AssemblyProduct("DeskLamp-WinClient")]
-[assembly: AssemblyCopyright("Copyright © DMXControl Projects e.V. 2017")]
+[assembly: AssemblyCopyright("Copyright © DMXControl Projects e.V. 2017-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
