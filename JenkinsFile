@@ -45,10 +45,19 @@ pipeline {
 				}
 			}
 		}
+		stage('Readout Program Version'){
+			steps {
+				script {
+					//  Read the version number out of the main assembly to use it for the installer builder
+					PROGRAM_VERSION_TOKENIZED = powershell(returnStdout: true, script: "([System.Reflection.Assembly]::LoadFrom(\"${WORKSPACE}/DeskLamp-WinClient/bin/Release/DeskLamp-WinClient.exe\").GetName().Version.ToString())").trim().tokenize(".")
+					PROGRAM_VERSION = PROGRAM_VERSION_TOKENIZED[0] + '.' + PROGRAM_VERSION_TOKENIZED[1] + '.' + PROGRAM_VERSION_TOKENIZED[3] + '.' + PROGRAM_VERSION_TOKENIZED[2]
+				}
+			}
+		}
 		stage('Pack Zip and Archive Artifacts'){
 			steps {
 				//  Zip the release output and archive it
-				zip zipFile: 'DeskLamp-WinClient.zip', archive: false, dir: 'DeskLamp-WinClient/bin/Release'
+				zip zipFile: 'DeskLamp-WinClient_${PROGRAM_VERSION}.zip', archive: false, dir: 'DeskLamp-WinClient/bin/Release'
                 archiveArtifacts artifacts: 'DeskLamp-WinClient.zip', fingerprint: true
 			}			
 		}
