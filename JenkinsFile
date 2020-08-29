@@ -20,6 +20,10 @@ pipeline {
 		OpenCover = tool 'OpenCover_current'
 		ReportGenerator = tool 'ReportGenerator_current'
 	}
+	triggers {
+		//  Trigger once a week
+		cron('H H * * H')
+	}
 	stages{
 		stage('Count Lines of Code'){
 			steps {
@@ -58,7 +62,7 @@ pipeline {
 			steps {
 				//  Zip the release output and archive it
 				zip zipFile: 'DeskLamp-WinClient_${PROGRAM_VERSION}.zip', archive: false, dir: 'DeskLamp-WinClient/bin/Release'
-                archiveArtifacts artifacts: 'DeskLamp-WinClient.zip', fingerprint: true
+                archiveArtifacts artifacts: 'DeskLamp-WinClient_${PROGRAM_VERSION}.zip', fingerprint: true
 			}			
 		}
 	}
