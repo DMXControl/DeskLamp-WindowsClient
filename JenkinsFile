@@ -64,8 +64,8 @@ pipeline {
 		stage('Pack Zip and Archive Artifacts'){
 			steps {
 				//  Zip the release output and archive it
-				zip zipFile: 'DeskLamp-WinClient_${PROGRAM_VERSION}.zip', archive: false, dir: 'DeskLamp-WinClient/bin/Release'
-                archiveArtifacts artifacts: 'DeskLamp-WinClient_${PROGRAM_VERSION}.zip', fingerprint: true
+				zip zipFile: "DeskLamp-WinClient_${PROGRAM_VERSION}.zip", archive: false, dir: 'DeskLamp-WinClient/bin/Release'
+                archiveArtifacts artifacts: "DeskLamp-WinClient_${PROGRAM_VERSION}.zip", fingerprint: true
 			}			
 		}
 	}
